@@ -1,0 +1,30 @@
+name: Test Package
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ['3.8', '3.9', '3.10', '3.11', '3.12', '3.13', '3.14-dev']
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v5
+      with:
+        python-version: ${{ matrix.python-version }}
+    
+    - name: Install package
+      run: |
+        python -m pip install --upgrade pip
+        pip install -e .
+    
+    - name: Test import
+      run: python -c "from colab_env_switcher import switch_python_version; print('Import successful')"
