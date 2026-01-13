@@ -1,0 +1,2 @@
+# Prevent .kiro directory from being merged into main branch
+.kiro/** merge=ours
