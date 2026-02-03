@@ -8,6 +8,7 @@ A simple Python library to easily switch Python versions in Google Colab environ
 - 📦 Automatic pip installation for the new Python version
 - ✅ Simple one-line API
 - 🔧 Optional uv package manager installation
+- 🔄 Auto restart runtime to apply changes (new in 0.1.2.post2)
 
 ## Installation
 
@@ -45,7 +46,7 @@ pip install -e .
 ```python
 from colab_env_switcher import switch_python_version
 
-# Switch to Python 3.11
+# Switch to Python 3.11 (will auto restart runtime)
 switch_python_version("3.11")
 ```
 
@@ -57,6 +58,26 @@ from colab_env_switcher import switch_python_version
 # Switch to Python 3.10 and install uv
 switch_python_version("3.10", install_uv=True)
 ```
+
+### Disable Auto Restart
+
+```python
+from colab_env_switcher import switch_python_version
+
+# Switch without auto restart (useful if you want to install packages first)
+switch_python_version("3.12", auto_restart=False)
+
+# Then manually restart later:
+# from google.colab import runtime; runtime.unassign()
+```
+
+## Parameters
+
+| Parameter | Type | Default | Description |
+|-----------|------|---------|-------------|
+| `version` | str | required | Python version to switch to (e.g., "3.11") |
+| `install_uv` | bool | False | Install uv package manager after switching |
+| `auto_restart` | bool | True | Automatically restart runtime after switching |
 
 ## Supported Python Versions
 
@@ -75,16 +96,17 @@ switch_python_version("3.10", install_uv=True)
 
 ```python
 # Install the library
-!pip install git+https://github.com/911218sky/colab-env-switcher.git
+!pip install colab-env-switcher
 
 # Import and use
 from colab_env_switcher import switch_python_version
 
-# Switch to Python 3.11
+# Switch to Python 3.11 (runtime will auto restart)
 switch_python_version("3.11")
 
-# Verify the version
-!python --version
+# After restart, verify the version
+import sys
+print(sys.version)
 
 # Reinstall your required packages
 !pip install numpy pandas matplotlib
@@ -93,9 +115,9 @@ switch_python_version("3.11")
 ## Important Notes
 
 ⚠️ **After switching Python versions:**
-- The environment will be reset
+- The runtime will automatically restart (unless `auto_restart=False`)
+- After restart, `sys.version` will show the correct Python version
 - You need to reinstall all required packages
-- Runtime restart is not required
 
 ## License
 

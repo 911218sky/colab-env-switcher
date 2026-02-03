@@ -5,18 +5,41 @@ Python environment switcher for Google Colab
 import subprocess
 
 
-def switch_python_version(version: str, install_uv: bool = False) -> None:
+def _is_colab() -> bool:
+    """Check if running in Google Colab environment."""
+    try:
+        import google.colab
+        return True
+    except ImportError:
+        return False
+
+
+def _restart_runtime() -> None:
+    """Restart the Colab runtime to apply Python version changes."""
+    if _is_colab():
+        print("\n🔄 Restarting runtime to apply changes...")
+        print("   After restart, run: import sys; print(sys.version)")
+        from google.colab import runtime
+        runtime.unassign()
+    else:
+        print("\n⚠️  Not running in Colab. Please restart your Python environment manually.")
+
+
+def switch_python_version(version: str, install_uv: bool = False, auto_restart: bool = True) -> None:
     """
     Switch Python version in Google Colab environment.
     
     Args:
         version (str): Python version to switch to (e.g., "3.9", "3.10", "3.11", "3.12", "3.13", "3.14")
         install_uv (bool): Whether to install uv package manager after switching (default: False)
+        auto_restart (bool): Whether to automatically restart runtime after switching (default: True)
+                            Set to False if you want to install packages before restart.
     
     Example:
         >>> from colab_env_switcher import switch_python_version
-        >>> switch_python_version("3.11")
+        >>> switch_python_version("3.11")  # Will auto restart
         >>> switch_python_version("3.14", install_uv=True)
+        >>> switch_python_version("3.12", auto_restart=False)  # Manual restart later
     """
     print(f"🚀 Starting Python environment switch to version: {version}...")
     
@@ -91,6 +114,14 @@ def switch_python_version(version: str, install_uv: bool = False) -> None:
         print("\n⚠️  Note: Environment has been reset.")
         print("    Please reinstall required packages using '!pip install ...'")
         print("    (e.g., numpy, pandas, etc.)")
+        
+        # Auto restart runtime to apply changes
+        if auto_restart:
+            _restart_runtime()
+        else:
+            print("\n💡 Tip: Run the following to restart manually:")
+            print("    from google.colab import runtime; runtime.unassign()")
+            print("    Or use: Runtime > Restart runtime")
         
     except subprocess.CalledProcessError as e:
         print(f"\n❌ Error occurred during installation: {e}")
