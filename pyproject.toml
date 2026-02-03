@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "colab-env-switcher"
-version = "0.1.2.post1"
+version = "0.1.2.post2"
 description = "A Python environment switcher for Google Colab"
 readme = "README.md"
 authors = [{name = "911218sky", email = "sky@sky1218.com"}]
