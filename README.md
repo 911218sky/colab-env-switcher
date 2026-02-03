@@ -90,9 +90,7 @@ from colab_env_switcher import switch_python_version
 # Switch to Python 3.11
 switch_python_version("3.11")
 
-# Restart runtime: Runtime > Restart session
-
-# After restart, verify the version
+# Verify the version
 import sys
 print(sys.version)
 
@@ -103,8 +101,6 @@ print(sys.version)
 ## Important Notes
 
 ⚠️ **After switching Python versions:**
-- Manually restart runtime: `Runtime > Restart session`
-- After restart, `sys.version` will show the correct Python version
 - You need to reinstall all required packages
 
 ## License

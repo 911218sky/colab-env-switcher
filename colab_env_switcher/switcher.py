@@ -88,12 +88,8 @@ def switch_python_version(version: str, install_uv: bool = False) -> None:
             subprocess.run(["pip", "install", "uv"], check=True)
             print("✅ uv installed successfully!")
         
-        print("\n⚠️  Note: Environment has been reset.")
-        print("    Please reinstall required packages using '!pip install ...'")
+        print("\n⚠️  Note: Please reinstall required packages using '!pip install ...'")
         print("    (e.g., numpy, pandas, etc.)")
-        
-        print("\n💡 Tip: Restart runtime to apply changes:")
-        print("    Runtime > Restart session")
         
     except subprocess.CalledProcessError as e:
         print(f"\n❌ Error occurred during installation: {e}")
