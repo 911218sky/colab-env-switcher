@@ -17,10 +17,10 @@ def _is_colab() -> bool:
 def _restart_runtime() -> None:
     """Restart the Colab runtime to apply Python version changes."""
     if _is_colab():
+        import os
         print("\n🔄 Restarting runtime to apply changes...")
         print("   After restart, run: import sys; print(sys.version)")
-        from google.colab import runtime
-        runtime.unassign()
+        os.kill(os.getpid(), 9)
     else:
         print("\n⚠️  Not running in Colab. Please restart your Python environment manually.")
 
@@ -120,8 +120,8 @@ def switch_python_version(version: str, install_uv: bool = False, auto_restart: 
             _restart_runtime()
         else:
             print("\n💡 Tip: Run the following to restart manually:")
-            print("    from google.colab import runtime; runtime.unassign()")
-            print("    Or use: Runtime > Restart runtime")
+            print("    import os; os.kill(os.getpid(), 9)")
+            print("    Or use: Runtime > Restart session")
         
     except subprocess.CalledProcessError as e:
         print(f"\n❌ Error occurred during installation: {e}")
